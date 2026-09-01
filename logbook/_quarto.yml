@@ -7,7 +7,6 @@ book:
   date: today
   chapters:
     - index.qmd
-    - entries/20260901.qmd
     # New entries go here, one line per session, in chronological order.
     # File naming convention: entries/YYYYMMDD.qmd (append a, b, ... for a
     # second entry on the same day, e.g. 20260901b.qmd).
