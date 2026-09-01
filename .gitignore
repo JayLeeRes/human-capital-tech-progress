@@ -1,9 +1,12 @@
 # Scopus-derived data: not redistributed (licensing restrictions). Only the
 # code/ scripts in each data/NN_stage/ folder are tracked; rerun the
 # pipeline against your own Scopus-licensed data pull to reproduce input/
-# and output/.
-data/*/input/
-data/*/output/
+# and output/. The folders themselves are kept (via .gitkeep) so the
+# expected pipeline layout is still visible.
+data/*/input/*
+data/*/output/*
+!data/*/input/.gitkeep
+!data/*/output/.gitkeep
 
 # All PDFs: third-party reference papers in paper/ are copyrighted and not
 # redistributed; draft.pdf is a compiled build artifact -- regenerate it
