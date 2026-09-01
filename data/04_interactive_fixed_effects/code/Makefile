@@ -1,6 +1,4 @@
-SHELL := bash
-
-.PHONY: all clean
+SHELL=bash
 
 all: \
 	../output/lambda_r1_pctile.csv \
@@ -13,20 +11,22 @@ all: \
 	../output/peer_effects_colocated.csv
 
 # --- upstream inputs, symlinked in from earlier pipeline stages ------------
-# (mirrors doctor-tasks' `input/%: ../tasks/X/output/% | input/` convention:
-# build the upstream stage first if its output is missing, then link it in)
+# (doctor-tasks style: link to whatever the upstream stage already has in
+# its output/; if it hasn't been built yet, `make` fails here rather than
+# silently rebuilding it for you -- run `make -C ../../0N_stage/code` by
+# hand first, same as any other doctor-tasks task.)
 
-../input/publication_history.csv: | ../input/
-	$(MAKE) -C ../../02_publication_history/code
-	ln -sf ../../02_publication_history/output/publication_history.csv $@
+../input/:
+	mkdir $@
 
-../input/citation_10y.csv: | ../input/
-	$(MAKE) -C ../../03_citation_10y/code
-	ln -sf ../../03_citation_10y/output/citation_10y.csv $@
+../input/publication_history.csv: ../../02_publication_history/output/publication_history.csv | ../input/
+	ln -sf $< $@
 
-../input/t6_authors.csv: | ../input/
-	$(MAKE) -C ../../02_publication_history/code ../input/t6_authors.csv
-	ln -sf ../../02_publication_history/input/t6_authors.csv $@
+../input/citation_10y.csv: ../../03_citation_10y/output/citation_10y.csv | ../input/
+	ln -sf $< $@
+
+../input/t6_authors.csv: ../../02_publication_history/input/t6_authors.csv | ../input/
+	ln -sf $< $@
 
 # ../input/nobel_priority_authors.csv is hand-curated, not derived -- no rule.
 
@@ -57,18 +57,20 @@ COMMON_INPUTS = ../input/publication_history.csv ../input/citation_10y.csv
 	Rscript 06_model_comparison_cv.R
 
 # --- 07: cohort x collaboration-structure heterogeneity --------------------
-# depends on 05's alpha_additive_fe.csv
+# depends on 05's alpha_additive_fe.csv (same-stage dependency, kept as a
+# direct rule -- unlike the cross-stage upstream links above, this isn't a
+# `$(MAKE) -C` call to another folder)
 ../output/cohort_heterogeneity.csv: \
 		07_cohort_heterogeneity.R $(COMMON_INPUTS) ../input/t6_authors.csv ../output/alpha_additive_fe.csv
 	Rscript 07_cohort_heterogeneity.R
 
 # --- 08: calendar-year structural-break scan --------------------------------
-# depends on 03's year_fe.csv
+# depends on 03's year_fe.csv (same-stage dependency)
 ../output/structural_breaks.csv: 08_structural_break_scan.R ../output/year_fe.csv ../input/publication_history.csv
 	Rscript 08_structural_break_scan.R
 
 # --- 09: peer-environment design (coauthors vs. co-located non-coauthors) --
-# depends on 05's alpha_additive_fe.csv
+# depends on 05's alpha_additive_fe.csv (same-stage dependency)
 ../output/peer_effects_coauthors.csv ../output/peer_effects_colocated.csv: \
 		09_peer_effects.R $(COMMON_INPUTS) ../output/alpha_additive_fe.csv
 	Rscript 09_peer_effects.R

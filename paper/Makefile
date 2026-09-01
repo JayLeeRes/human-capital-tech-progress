@@ -1,13 +1,14 @@
-SHELL := bash
-
-.PHONY: all clean
+SHELL=bash
 
 all: paper.pdf
 
-# paper.qmd's tables/figures are computed from data/04_interactive_fixed_effects's
-# output/; make sure that stage is up to date before rendering.
+# paper.qmd's numbers are computed by data/04_interactive_fixed_effects's
+# pipeline; unlike doctor-tasks' \input{}-based LaTeX files, paper.qmd
+# doesn't read those CSVs as literal file inputs at render time (the
+# figures are written into the prose by hand), so there's no file-level
+# dependency to declare here -- run `make -C ../data/04_interactive_fixed_effects/code`
+# by hand first if you want the underlying numbers refreshed.
 paper.pdf: paper.qmd ../bib/references.bib ../bib/aer.bst
-	$(MAKE) -C ../data/04_interactive_fixed_effects/code
 	quarto render paper.qmd --to pdf
 
 clean:
