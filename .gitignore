@@ -1,0 +1,34 @@
+# Scopus-derived data: not redistributed (licensing restrictions). Only the
+# code/ scripts in each data/NN_stage/ folder are tracked; rerun the
+# pipeline against your own Scopus-licensed data pull to reproduce input/
+# and output/.
+data/*/input/
+data/*/output/
+
+# All PDFs: third-party reference papers in paper/ are copyrighted and not
+# redistributed; draft.pdf is a compiled build artifact -- regenerate it
+# with `quarto render draft.qmd`.
+*.pdf
+
+# Python virtual environment
+.venv/
+
+# LaTeX build artifacts
+*.aux
+*.auxlock
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.dpth
+*.md5
+
+# OS files
+.DS_Store
+
+# IDE / local tool settings (personal, machine-specific)
+.vscode/
+.claude/
