@@ -35,6 +35,12 @@ format:
         \titleformat{\section}[hang]{\normalfont\large\bfseries\centering}{\thesection.}{1em}{}
         \titleformat{\subsection}[hang]{\normalfont\normalsize\bfseries}{\thesubsection.}{1em}{}
         \titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\thesubsubsection.}{1em}{}
+        % Table notes: smaller, single-spaced, unindented, and pulled up under
+        % the table so they read as part of the exhibit rather than as body text.
+        \newcommand{\tablenote}[1]{%
+          \par\vspace{-0.6\baselineskip}%
+          \begingroup\footnotesize\setstretch{1.0}\noindent #1\par\endgroup%
+          \vspace{0.4\baselineskip}\par}
 execute:
   echo: false
 bibliography: ../bib/references.bib
@@ -175,7 +181,9 @@ where $\eta_{j(i)}$ is a fixed effect for the author's modal early-career instit
 
 : Progressive robustness of the early-career peer-quality coefficient in (@eq-peer-spec) {#tbl-peer-effects}
 
-*Note*: \*$p<0.05$, \*\*$p<0.01$, \*\*\*$p<0.001$. Specification (1) restricts the peer measure to an author's actual coauthors on papers published at academic age 0--3 and controls for own early-career percentile alone (unconditional own-effect coefficient, not tabulated, is 0.104). Specifications (2)--(3) replace this with the mean ability of co-located but never-coauthored researchers observed at the same institution-year cells. Specification (3) additionally absorbs institution fixed effects, so identification rests solely on within-institution variation in peer quality across cohorts entering the same institution at different times.
+```{=latex}
+\tablenote{\textit{Note}: *$p<0.05$, **$p<0.01$, ***$p<0.001$. Specification (1) restricts the peer measure to an author's actual coauthors on papers published at academic age 0--3 and controls for own early-career percentile alone (unconditional own-effect coefficient, not tabulated, is 0.104). Specifications (2)--(3) replace this with the mean ability of co-located but never-coauthored researchers observed at the same institution-year cells. Specification (3) additionally absorbs institution fixed effects, so identification rests solely on within-institution variation in peer quality across cohorts entering the same institution at different times.}
+```
 
 Two patterns emerge. First, moving from actual coauthors to co-located non-coauthors leaves the coefficient on own early-career performance essentially unchanged (0.121 versus 0.116 across specifications (2)--(3)), whereas including actual coauthor quality roughly halves it (from an unconditional 0.104 to 0.062 in specification (1)); this is consistent with actual-coauthor quality partly proxying for the focal author's own unobserved early-career ability, whereas co-located peer quality---which correlates with own early performance at only $r=0.060$, against $r=0.316$ for actual coauthors---constitutes a comparatively independent and more plausibly exogenous source of variation.
 
