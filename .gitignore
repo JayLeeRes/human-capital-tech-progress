@@ -17,6 +17,10 @@ data/*/output/*
 logbook/_book/
 logbook/.quarto/
 
+# Make build-state stamps (local build state only; a fresh clone should
+# rebuild everything for real rather than trusting someone else's stamps)
+.stamp_*
+
 # Python virtual environment
 .venv/
 
