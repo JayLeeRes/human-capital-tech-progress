@@ -1,0 +1,15 @@
+# Preface {.unnumbered}
+
+This logbook records the progress of the *Ability or Environment? Peer
+Congestion in the Making of Academic Human Capital* project (see
+`../draft.qmd`), in the same spirit as the `logbook/` convention used in
+`doctor-tasks`: one dated entry per work session, describing what was done,
+what was found, and what changed.
+
+**Adding a new entry:**
+
+1. Create `entries/YYYYMMDD.qmd` (use a letter suffix — `20260901b.qmd` —
+   for a second entry the same day).
+2. Add it to the `chapters:` list in `_quarto.yml`, in chronological order.
+3. Render with `quarto render logbook/` (from the project root) to rebuild
+   `logbook/_book/`.
