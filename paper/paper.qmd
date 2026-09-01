@@ -37,9 +37,9 @@ format:
         \titleformat{\subsubsection}[hang]{\normalfont\normalsize\itshape}{\thesubsubsection.}{1em}{}
 execute:
   echo: false
-bibliography: bib/references.bib
+bibliography: ../bib/references.bib
 cite-method: natbib
-biblio-style: bib/aer
+biblio-style: ../bib/aer
 link-citations: true
 ---
 

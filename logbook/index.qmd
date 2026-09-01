@@ -2,7 +2,7 @@
 
 This logbook records the progress of the *Ability or Environment? Peer
 Congestion in the Making of Academic Human Capital* project (see
-`../draft.qmd`), in the same spirit as the `logbook/` convention used in
+`../paper/paper.qmd`), in the same spirit as the `logbook/` convention used in
 `doctor-tasks`: one dated entry per work session, describing what was done,
 what was found, and what changed.
 

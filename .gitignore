@@ -8,9 +8,9 @@ data/*/output/*
 !data/*/input/.gitkeep
 !data/*/output/.gitkeep
 
-# All PDFs: third-party reference papers in paper/ are copyrighted and not
-# redistributed; draft.pdf is a compiled build artifact -- regenerate it
-# with `quarto render draft.qmd`.
+# All PDFs: third-party reference papers in references/ are copyrighted
+# and not redistributed; paper/paper.pdf is a compiled build artifact --
+# regenerate it with `quarto render paper/paper.qmd`.
 *.pdf
 
 # Quarto book build output/cache (regenerate with `quarto render logbook/`)
