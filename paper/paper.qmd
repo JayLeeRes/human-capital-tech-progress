@@ -113,17 +113,6 @@ The publication data for this study were collected in three stages through the E
 
 Author--academic-age cells were formed for academic ages 0 through 30 using the cohort-percentile outcome of Section III.A, averaging multiple papers published by the same author at the same academic age into a single cell. Authors observed at fewer than two distinct academic ages---for whom author and academic-age effects cannot be jointly identified---were dropped. This restriction reduces the 13,287 T6 authors to a final analytic sample of 9,843 authors, observed in 112,091 of $9{,}843\times31=305{,}133$ possible author--age cells (36.7% density).
 
-## T6-Entry Cohort Definitions (Secondary Check Only) {#sec-cohort-def}
-
-For the secondary ICT check in Sections V.B and VI.D only, each author is assigned to one of two cohorts based on the calendar year of their *first T6-journal* publication (which need not coincide with their first publication in any journal, used to define academic age above), following [@Hamermesh2013]'s early-1990s breakpoint.
-
-| Group | T6 Entry Criterion | $N$ | Interpretation |
-|------------------|:-----------------------------------|---:|------------------|
-| $C^1$ | First T6 publication before 1992 | 1,919 | incumbent |
-| $C^2$ | First T6 publication in or after 1992 | 7,924 | new T6 entrant |
-
-: Cohort definitions {#tbl-cohort-def}
-
 ## Unit of Analysis and Dependent Variable
 
 The unit of analysis is the combination of author $i$ and academic age $t$ (Sections III.A--III.B), except in the calendar-year specification of Section V.B, which indexes observations by calendar year and uses $\ln(1+c_{i,t})$ rather than the cohort percentile, since the percentile transform is by construction invariant to a shock that shifts an entire cohort uniformly.
@@ -136,7 +125,7 @@ To test whether $\hat\alpha_i$ reflects time-invariant ability $H_i$ or a persis
 
 ## Secondary Application: Cohort and Calendar-Time Tests for ICT Effects {#sec-strategy-ict}
 
-This subsection briefly describes the two narrow tests behind Section VI.D. First, (@eq-additive) is estimated separately within the $C^1$/$C^2$ cohorts of Section IV.C, and the resulting $\hat\alpha_i$ distributions are compared by a two-sample Kolmogorov--Smirnov test and a Welch $t$-test, further stratified by each author's career-long mean coauthor count and international-collaboration share. Second, because the cohort-percentile outcome cannot detect a shock common to an entire publication-year cohort, a level-based specification with an explicit calendar-year fixed effect is estimated jointly with the rank-one interactive age factor,
+This subsection briefly describes the two narrow tests behind Section VI.D. First, authors are split by whether their *first T6-journal* publication---distinct from their first publication in any journal, which defines academic age---came before 1992 or in/after it, following [@Hamermesh2013]'s early-1990s breakpoint: 1,919 incumbents ($C^1$) versus 7,924 new entrants ($C^2$). (@eq-additive) is estimated separately within each cohort, and the resulting $\hat\alpha_i$ distributions are compared by a two-sample Kolmogorov--Smirnov test and a Welch $t$-test, further stratified by each author's career-long mean coauthor count and international-collaboration share. Second, because the cohort-percentile outcome cannot detect a shock common to an entire publication-year cohort, a level-based specification with an explicit calendar-year fixed effect is estimated jointly with the rank-one interactive age factor,
 
 $$
 \ln(1+c_{i,t}) \;=\; \gamma_{y(i,t)} + \lambda_i F_t + \varepsilon_{it}, \qquad y(i,t)=\text{first}_i+t,
@@ -210,7 +199,7 @@ This result qualifies the structural interpretation of $\hat\alpha_i$ used throu
 
 This subsection reports the narrow ICT tests from Section V.B; as discussed there and in Section II.B, they speak only to a discrete level shock and to the team-size channel specifically, not to a general change in the return to ability.
 
-@tbl-cohort-summary compares the $\hat\alpha_i$ distribution across the $C^1$/$C^2$ cohorts of @tbl-cohort-def. A two-sample Kolmogorov--Smirnov test rejects equality ($D=0.067$, $p=1.6\times10^{-6}$), and the standard deviation is 18.3% larger post-1992 (0.135 versus 0.160); the same pattern holds for the interactive loading $\hat\lambda_i$ (SD 0.713 versus 0.911, $D=0.075$, $p=6.2\times10^{-8}$), so it is not an artifact of the model-selection choice in Section III.C. Because $C^1$/$C^2$ are defined by entry cohort rather than a fixed calendar date, this comparison alone cannot separate a genuine period effect from an ordinary age-cohort pattern in which more recent entrants are earlier in their careers and hence more heterogeneous.
+@tbl-cohort-summary compares the $\hat\alpha_i$ distribution across the $C^1$/$C^2$ cohorts defined in Section V.B. A two-sample Kolmogorov--Smirnov test rejects equality ($D=0.067$, $p=1.6\times10^{-6}$), and the standard deviation is 18.3% larger post-1992 (0.135 versus 0.160); the same pattern holds for the interactive loading $\hat\lambda_i$ (SD 0.713 versus 0.911, $D=0.075$, $p=6.2\times10^{-8}$), so it is not an artifact of the model-selection choice in Section III.C. Because $C^1$/$C^2$ are defined by entry cohort rather than a fixed calendar date, this comparison alone cannot separate a genuine period effect from an ordinary age-cohort pattern in which more recent entrants are earlier in their careers and hence more heterogeneous.
 
 | Statistic | $C^1$ incumbent (pre-1992) | $C^2$ new T6 (post-1992) |
 |---|---:|---:|
