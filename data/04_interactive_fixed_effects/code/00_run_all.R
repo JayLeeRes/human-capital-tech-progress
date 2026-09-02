@@ -22,7 +22,11 @@
 #         -> Section VI.E
 #   09  Peer-environment design: actual coauthors vs co-located non-
 #       coauthors, with and without institution fixed effects
-#         -> Section VI.F
+#         -> Section VI.C
+#   10  How trustworthy is alpha_i: split-half reliability, and whether it
+#       is actually time-invariant (early- vs late-career alpha)
+#   11  Does 09's congestion result survive measuring peers at the time of
+#       co-location rather than by their career-average alpha?
 #
 # 06, 07, and 09 depend on 05's output (alpha_additive_fe.csv); 08 depends
 # on 03's output (year_fe.csv). The order below respects both.
@@ -46,7 +50,9 @@ steps <- c(
   "06_model_comparison_cv.R",
   "07_cohort_heterogeneity.R",
   "08_structural_break_scan.R",
-  "09_peer_effects.R"
+  "09_peer_effects.R",
+  "10_alpha_reliability.R",
+  "11_peer_effects_contemporaneous.R"
 )
 
 for (step in steps) {

@@ -8,7 +8,9 @@ all: \
 	../output/model_comparison_cv.csv \
 	../output/cohort_heterogeneity.csv \
 	../output/structural_breaks.csv \
-	../output/peer_effects_colocated.csv
+	../output/peer_effects_colocated.csv \
+	../output/alpha_reliability.csv \
+	../output/peer_effects_contemporaneous.csv
 
 # --- upstream inputs, symlinked in from earlier pipeline stages ------------
 # (doctor-tasks style: link to whatever the upstream stage already has in
@@ -74,6 +76,14 @@ COMMON_INPUTS = ../input/publication_history.csv ../input/citation_10y.csv
 ../output/peer_effects_coauthors.csv ../output/peer_effects_colocated.csv: \
 		09_peer_effects.R $(COMMON_INPUTS) ../output/alpha_additive_fe.csv
 	Rscript 09_peer_effects.R
+
+# --- 10: is alpha_i precise, and is it actually time-invariant? -------------
+../output/alpha_reliability.csv: 10_alpha_reliability.R $(COMMON_INPUTS)
+	Rscript 10_alpha_reliability.R
+
+# --- 11: peers measured at the time of co-location, not career-average -----
+../output/peer_effects_contemporaneous.csv: 11_peer_effects_contemporaneous.R $(COMMON_INPUTS)
+	Rscript 11_peer_effects_contemporaneous.R
 
 clean:
 	rm -f ../output/*.csv
