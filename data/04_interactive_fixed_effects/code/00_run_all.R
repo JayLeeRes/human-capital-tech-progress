@@ -27,6 +27,9 @@
 #       is actually time-invariant (early- vs late-career alpha)
 #   11  Does 09's congestion result survive measuring peers at the time of
 #       co-location rather than by their career-average alpha?
+#   12  Monte Carlo confirming the asymptotic rates behind 10's reliability:
+#       lambda_i converges at sqrt(T_i) and not at all in N (simulation only,
+#       reads no data)
 #
 # 06, 07, and 09 depend on 05's output (alpha_additive_fe.csv); 08 depends
 # on 03's output (year_fe.csv). The order below respects both.
@@ -52,7 +55,8 @@ steps <- c(
   "08_structural_break_scan.R",
   "09_peer_effects.R",
   "10_alpha_reliability.R",
-  "11_peer_effects_contemporaneous.R"
+  "11_peer_effects_contemporaneous.R",
+  "12_ife_consistency_mc.R"
 )
 
 for (step in steps) {

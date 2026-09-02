@@ -10,7 +10,8 @@ all: \
 	../output/structural_breaks.csv \
 	../output/peer_effects_colocated.csv \
 	../output/alpha_reliability.csv \
-	../output/peer_effects_contemporaneous.csv
+	../output/peer_effects_contemporaneous.csv \
+	../output/ife_consistency_mc.csv
 
 # --- upstream inputs, symlinked in from earlier pipeline stages ------------
 # (doctor-tasks style: link to whatever the upstream stage already has in
@@ -84,6 +85,10 @@ COMMON_INPUTS = ../input/publication_history.csv ../input/citation_10y.csv
 # --- 11: peers measured at the time of co-location, not career-average -----
 ../output/peer_effects_contemporaneous.csv: 11_peer_effects_contemporaneous.R $(COMMON_INPUTS)
 	Rscript 11_peer_effects_contemporaneous.R
+
+# --- 12: is lambda_i'F_t consistently estimated? (Monte Carlo, no data) ----
+../output/ife_consistency_mc.csv: 12_ife_consistency_mc.R
+	Rscript 12_ife_consistency_mc.R
 
 clean:
 	rm -f ../output/*.csv

@@ -1,0 +1,199 @@
+# Is the Time-Varying Individual Effect Consistently Estimated?
+
+*2026-09-01. Companion code: `data/04_interactive_fixed_effects/code/12_ife_consistency_mc.R`.*
+
+## The question, stated so that it has an answer
+
+The interactive fixed-effects model of @Bai2009 writes
+
+$$
+Y_{it} \;=\; \lambda_i' F_t \;+\; \varepsilon_{it},
+\qquad \lambda_i, F_t \in \mathbb{R}^{r},
+\qquad i = 1,\dots,N,\; t = 1,\dots,T .
+$$ {#eq-ife}
+
+Before asking whether anything here is consistently estimated, we have to
+settle *what* is being estimated, because the obvious candidates are not
+estimable at all. For any invertible $r\times r$ matrix $H$,
+
+$$
+\lambda_i' F_t \;=\; \bigl(\lambda_i' H^{-1}\bigr)\bigl(H F_t\bigr)
+\;=\; \tilde\lambda_i' \tilde F_t ,
+$$
+
+so $(\lambda_i, F_t)$ and $(\tilde\lambda_i, \tilde F_t)$ generate an
+identical distribution for the observed data. No estimator can separate them.
+The parameters $\lambda_i$ and $F_t$ are individually **not identified**, and
+a consistency claim about either one, stated without qualification, is not
+merely unproven but meaningless.
+
+What survives the transformation is the product. Define the *time-varying
+individual effect*
+
+$$
+\mu_{it} \;\equiv\; \lambda_i' F_t ,
+$$ {#eq-mu}
+
+which is invariant to $H$ by the display above. This is the only
+rotation-free object in the model, and so it is the only one about which a
+consistency theorem can be stated. Everything below concerns
+$\hat\mu_{it} \overset{p}{\longrightarrow} \mu_{it}$.
+
+::: {.callout-note}
+The usual convention is to report $\hat\lambda_i$ "up to rotation," meaning:
+there exists a sequence of matrices $H_{NT}$, depending on the sample, such
+that $\hat\lambda_i - H_{NT}'\lambda_i \to 0$. That is a statement about
+$\hat\lambda_i$ relative to a moving target, not about $\lambda_i$. It is
+useful for deriving @eq-mu's behaviour and useless as a claim about an
+individual researcher's ability.
+:::
+
+## The estimator
+
+Stack @eq-ife as $Y = \Lambda F' + \varepsilon$ with $Y$ of dimension
+$N \times T$, $\Lambda$ of $N \times r$, $F$ of $T \times r$. The principal
+components estimator solves
+
+$$
+(\hat\Lambda, \hat F) \;=\; \arg\min_{\Lambda, F}\; \bigl\| Y - \Lambda F' \bigr\|_F^2
+\qquad \text{s.t.}\quad F'F/T = I_r,\;\; \Lambda'\Lambda \ \text{diagonal},
+$$ {#eq-pc}
+
+whose solution, by the Eckart--Young--Mirsky theorem, is the rank-$r$
+truncated singular value decomposition of $Y$: $\hat F$ is $\sqrt{T}$ times
+the matrix of the first $r$ right singular vectors, and
+$\hat\Lambda = Y\hat F/T$. The normalisation in @eq-pc removes $r^2$ of the
+$r^2$ degrees of rotational freedom, which is why the algorithm returns a
+unique answer despite the non-identification above --- it picks one
+representative from the equivalence class, not the true one.
+
+## Where the sampling error comes from
+
+Take $r=1$ for transparency; nothing essential changes for $r>1$. Substituting
+$Y = \lambda F' + \varepsilon$ into $\hat\lambda = Y\hat F/T$,
+
+$$
+\hat\lambda_i
+\;=\; \frac{1}{T}\sum_{t=1}^{T} Y_{it}\hat F_t
+\;=\; \underbrace{\lambda_i \cdot \frac{1}{T}\sum_t F_t \hat F_t}_{\textstyle H_T \,\lambda_i}
+\;+\; \underbrace{\frac{1}{T}\sum_t \varepsilon_{it}\hat F_t}_{\textstyle (\mathrm{I})} .
+$$ {#eq-decomp}
+
+The decomposition is the whole story, and each piece answers to a different
+dimension of the sample.
+
+**Term $H_T$** is a scalar (in general, an $r\times r$ matrix) that does not
+depend on $i$. It converges to a fixed limit as $T\to\infty$ under the
+standard factor-strength condition $F'F/T \to \Sigma_F > 0$. It is the
+rotation, and it never disappears --- it converges to something invertible,
+not to the identity.
+
+**Term (I)** is the error. Conditional on $\hat F$, it is an average of $T$
+mean-zero terms, so
+
+$$
+\operatorname{Var}\bigl[(\mathrm{I})\bigr]
+\;=\; \frac{\sigma^2}{T^2}\sum_t \hat F_t^{\,2}
+\;=\; \frac{\sigma^2}{T}\cdot \frac{\hat F'\hat F}{T}
+\;=\; \frac{\sigma^2}{T},
+$$ {#eq-var}
+
+using the normalisation $\hat F'\hat F/T = 1$. **Read @eq-var carefully: $N$
+does not appear.** The sampling error in one unit's loading is governed
+entirely by that unit's own number of observations. Adding units to the panel
+sharpens $\hat F$, and through $\hat F$ it removes a second-order contamination
+in term (I), but it cannot shrink the leading $\sigma^2/T$. This is the
+incidental-parameters problem of @neyman_scott1948 in its factor-model guise:
+$\lambda_i$ is a parameter whose count grows with the sample, so the
+information per parameter never accumulates.
+
+The mirror-image argument applied to $\hat F = Y'\hat\lambda / (\hat\lambda'\hat\lambda)$
+gives $\operatorname{Var}(\hat F_t - H^{-1}F_t) = O(1/N)$: the factor *is*
+consistently estimated as $N\to\infty$, for fixed $T$.
+
+Combining the two through @eq-mu, and this is @Bai2003's Theorem 3,
+
+$$
+\min\bigl(\sqrt{N},\sqrt{T}\bigr)\,\bigl(\hat\mu_{it} - \mu_{it}\bigr)
+\;\xrightarrow{\ d\ }\; \mathcal{N}\bigl(0,\; V_{it}\bigr) .
+$$ {#eq-rate}
+
+## The answer
+
+@eq-rate is the consistency result, and it is a joint one:
+$\hat\mu_{it} \overset{p}{\to} \mu_{it}$ requires **both** $N\to\infty$ **and**
+$T\to\infty$. Neither alone suffices, and the slower dimension binds. In
+particular:
+
+- If $T$ is fixed --- however large $N$ grows --- then $\min(\sqrt N,\sqrt T)$
+  is bounded, the asymptotic variance does not vanish, and $\hat\mu_{it}$ is
+  **inconsistent**. This is not a small-sample caveat; it is the limit.
+- The claim "we have 9,843 researchers, so we have a large sample" is
+  therefore a *non sequitur* for this parameter. $N$ is large in the dimension
+  that identifies $F_t$, and irrelevant to the dimension that identifies
+  $\lambda_i$.
+
+## Numerical confirmation
+
+`12_ife_consistency_mc.R` simulates @eq-ife at $r=1$ over
+$N \in \{100, 400, 1600, 6400\}$ and $T \in \{5,10,20,40,80\}$, 200
+replications per cell, and rescales each root-mean-squared error by the rate
+the theory predicts. If the theory is right, each rescaled table should be
+flat. It is, to three digits:
+
+| Quantity | Rescaled by | Result across the whole $N\times T$ grid |
+|---|---|---|
+| $\hat\lambda_i$ | $\sqrt{T}$ | $0.999$ – $1.01$ |
+| $\hat F_t$ | $\sqrt{N}$ | $0.90$ – $1.00$ |
+| $\hat\mu_{it}$ | $\min(\sqrt N,\sqrt T)$ | $1.00$ – $1.35$ |
+
+The unscaled loading errors make the point more bluntly. Holding $T=10$ and
+raising $N$ from 100 to 6,400 --- a 64-fold increase in sample size --- moves
+the RMSE of $\hat\lambda_i$ from $0.318$ to $0.316$, and its reliability from
+$0.908$ to $0.909$. Sixty-four times the data buys nothing.
+
+## What this means for the paper's $\hat\alpha_i$
+
+The paper's primary estimator is the additive special case
+$Y_{it} = \alpha_i + \gamma_t + \varepsilon_{it}$, chosen in Section VI.B on
+out-of-sample grounds. It inherits exactly the same structure: with
+$\hat\alpha_i = \bar Y_{i\cdot} - \hat{\bar\gamma}$, the variance is again
+$\sigma^2/T_i$, free of $N$. The additive form is nonetheless the safer
+choice, because its error enters *additively* and unbiasedly --- classical
+measurement error with a known variance --- whereas in @eq-decomp the error
+multiplies $\hat F$ and induces bias, not just noise.
+
+Our panel has $N = 9{,}843$ and a median $T_i$ of $10$. So $N$ is effectively
+infinite and $T_i$ is emphatically not, and @eq-rate says the individual
+effect is measured with irreducible noise. The right response is not to claim
+consistency but to *quantify* the noise and carry it through. Calibrating the
+simulation to the estimated variance components of the real panel
+($\hat\tau^2 = 0.0164$, $\hat\sigma^2 = 0.04735$, $T=10$, $N=9{,}843$) closes
+the loop:
+
+| Source | Reliability of $\hat\alpha_i$ |
+|---|---|
+| Monte Carlo, calibrated | $0.776$ |
+| Parametric $\tau^2/(\tau^2+\sigma^2/T)$ | $0.776$ |
+| Split-half on the real data (`10_alpha_reliability.R`) | $0.742$ |
+
+The three agree. The imprecision in $\hat\alpha_i$ is not an anomaly needing
+explanation --- it is the precise quantity the asymptotic theory says
+$T_i = 10$ must leave behind, and the paper's disattenuation corrections in
+Section VI.A and Section VI.C are the appropriate way to handle it.
+
+## Two caveats this derivation does not cover
+
+1. **Unbalanced panel.** @Bai2003's theory assumes a complete $N\times T$
+   matrix. Ours has missing cells, and the estimator in
+   `02_ife_cohort_percentile.R` is a hard-impute matrix completion in the
+   sense of @mazumder_hastie_tibshirani2010. Consistency there requires the
+   missingness to be independent of $\varepsilon$, which is doubtful when a
+   researcher publishes in the T6 precisely in the years their work is
+   strong. The balanced case simulated above is the *favourable* one.
+2. **Time-invariance of $\lambda_i$.** @eq-ife holds $\lambda_i$ fixed across
+   $t$ by construction. Section VI.A rejects this on the data: early- and
+   late-career effects correlate $0.362$, or $0.488$ disattenuated. So even
+   the estimand $\mu_{it}$ is a projection onto a misspecified model, and the
+   consistency question above is conditional on a specification the data do
+   not fully support.
